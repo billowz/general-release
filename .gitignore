@@ -1,0 +1,6 @@
+/node_modules
+/*.log
+/package-lock.json
+/yarn.lock
+/CHANGELOG.md
+/.commit_template

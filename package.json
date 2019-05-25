@@ -1,0 +1,58 @@
+{
+	"name": "general-release",
+	"description": "Automatic Release Tool for Git repository using bash shell",
+	"version": "0.0.0",
+	"bin": "bin/bin.js",
+	"scripts": {
+		"postinstall": "node bin/bin.js install",
+		"preuninstall": "node bin/bin.js uninstall"
+	},
+	"releaseConfig": {
+		"config": "./.release.yml",
+		"tools": [
+			"message-template",
+			"message-lint"
+		],
+		"commitTemplate": "./.commit_template"
+	},
+	"homepage": "https://github.com/tao-zeng/general-release",
+	"author": "Tao Zeng <tao.zeng.zt@qq.com>",
+	"bugs": {
+		"url": "https://github.com/tao-zeng/general-release/issues"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/tao-zeng/general-release.git"
+	},
+	"keywords": [
+		"release",
+		"deploy",
+		"publish",
+		"package",
+		"version",
+		"tag",
+		"changelog",
+		"automation",
+		"ci",
+		"npm",
+		"github",
+		"appveyor",
+		"commit",
+		"commitlint"
+	],
+	"files": [
+		"lib",
+		"src",
+		"plugins",
+		"bin",
+		"install.js",
+		"README.md",
+		"CHANGELOG.md"
+	],
+	"private": false,
+	"license": "MIT",
+	"devDependencies": {},
+	"dependencies": {
+		"shelljs": "^0.8.3"
+	}
+}

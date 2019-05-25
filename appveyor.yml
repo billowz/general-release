@@ -1,0 +1,165 @@
+# encrypt
+# https://ci.appveyor.com/tools/encrypt
+# validate
+# https://ci.appveyor.com/tools/validate-yaml
+# Build API
+# https://www.appveyor.com/docs/build-worker-api
+# https://www.appveyor.com/docs/build-configuration/#script-blocks-in-build-configuration
+
+version: "{build}"
+image: Visual Studio 2015
+
+environment:
+  NPM_TOKEN:
+    secure: zTogpCh9AtlTR+osabCb9UMXMtIT8qTE0Rvay78bTORSysIVo5Ev+y6oOsHdDSO9
+  GITHUB_TOKEN:
+    secure: wMVG1uvMB8qswngCrsL0eg6E/7HEaCjbAmXFM26V+sVO1OnP1/mgMu6kGX2uCWm0
+
+init:
+  - git config --global core.autocrlf input
+  - ps: |
+      # define colors
+      $color_normal=$host.UI.RawUI.ForegroundColor
+      $color_red="Red"
+      $color_green="Green"
+      $color_yellow="Yellow"
+      $color_blue="Blue"
+      $color_cyan="Cyan"
+      $color_gray="Gray"
+      $color_black="Black"
+      $color_r=$color_red
+      $color_g=$color_green
+      $color_b=$color_cyan
+      $color_y=$color_yellow
+      #		      	    1 2                        3   45
+      $color_log_reg='(<(\/[a-zA-Z]*|[a-zA-Z]+)>|(.))((\\.|[^<])*)'
+
+      function ParseLog($message){
+        return $message -replace $color_log_reg, '$3$4'
+      }
+
+      function ColorLog([string] $message = "", [switch] $NoNewLine = $false) {
+        $prev_c = "normal"
+        $current_c = "normal"
+        [regex]::matches($message, $color_log_reg) | ForEach-Object {
+          $color_name=$_.Groups[2].value
+          $txt="$($_.Groups[3].value)$($_.Groups[4].value)"
+          if($color_name){
+            if ($color_name[0] -eq '/') {
+              $color_name = $prev_c
+            } else {
+              $prev_c = $current_c
+            }
+            $current_c = $color_name
+            $color=$(Get-Variable "color_$color_name" -ValueOnly)
+            if ( -not $color) {
+              Write-Error "invalid color: $color_name"
+            }
+          } else{
+            $color=$color_normal
+          }
+          if($txt){
+            Write-Host $txt -NoNewline -ForegroundColor $color
+          }
+        }
+        if (!$NoNewLine) {
+            Write-Host;
+        }
+      }
+
+      function LogDebug($message) {
+        ColorLog "[<g>debug</>] <g>$message"
+      }
+
+      function LogInfo($message) {
+        ColorLog "[<b> info</>] <b>$message"
+        $msg=ParseLog $message
+        Add-AppveyorMessage $msg -Category Information
+      }
+
+      function LogWarn($message) {
+        ColorLog "[<y>warn</>] <y>$message"
+        $msg=ParseLog $message
+        Add-AppveyorMessage $msg -Category Warning
+      }
+
+      function LogError($message) {
+        ColorLog "[<r>error</>] <r>$message"
+        $msg=ParseLog $message
+        Add-AppveyorMessage $msg -Category Error
+      }
+
+      $timePoints = New-Object -TypeName System.Collections.ArrayList
+      function StartTime() {
+        $timePoints.add($(GET-DATE))|Out-Null
+      }
+
+      function EndTime() {
+        if (!$timePoints.COUNT) {
+          LogError("should be call StartTimeLog before EndTimeLog")
+          exit 1
+        }
+        $start = $timePoints[$timePoints.COUNT - 1]
+        $timePoints.removeAt($timePoints.COUNT - 1)
+        return $(New-TimeSpan $start).TotalSeconds
+      }
+
+      function StartTimeInfo($message) {
+        StartTime
+        LogInfo $message
+      }
+
+      function EndTimeInfo($message) {
+        LogInfo "$message use <y>$(EndTime)s"
+      }
+
+      function StartTimeDebug($message) {
+        StartTime
+        LogDebug $message
+      }
+
+      function EndTimeDebug($message) {
+        LogDebug "$message use <y>$(EndTime)s"
+      }
+
+      function ExitErron($cond, $code, $message) {
+        if ($cond) {
+          LogError $message
+          $host.SetShouldExit($code)
+          exit $code
+        }
+      }
+
+install:
+  - ps: LogInfo "The build worker image is $env:APPVEYOR_BUILD_WORKER_IMAGE"
+  # update build details
+  - ps: |
+      StartTimeInfo "generating build details ..."
+      sh ./bin/bin.sh preview --debug
+      $release = $($LastExitCode -eq 0)
+      ExitErron $($LastExitCode -eq 1) 1 "pre-release with error`:` $LastExitCode"
+      EndTimeInfo "generated build details"
+
+build: false
+
+test: false
+
+deploy_script:
+  - ps: |
+      if (!$evn:APPVEYOR_PULL_REQUEST_NUMBER -and $release) {
+        StartTimeInfo "releasing ..."
+
+        $SOURCE = Get-ChildItem * -Directory | Where-Object {$_.FullName -match "lib|src|plugins|bin"}
+        $DESTINATION = Join-path . -ChildPath "general-release.zip"
+        Add-Type -assembly "system.io.compression.filesystem"
+        If(Test-path $DESTINATION) {
+            Remove-item $DESTINATION
+        }
+        Foreach ($s in $SOURCE) {
+            Compress-Archive -Path $s.fullname -DestinationPath $DESTINATION -Update
+        }
+
+        sh ./bin/bin.sh --debug
+        ExitErron $($LastExitCode -eq 1) 1 "release with error`:` $LastExitCode"
+        EndTimeInfo "released"
+      }

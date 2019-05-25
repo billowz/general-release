@@ -1,0 +1,28 @@
+commit:
+  - package.json
+  - CHANGELOG.md
+
+plugins:
+  - appveyor
+  - github -f general-release.zip
+  - npm
+
+branchs:
+  - { pattern: "^master$", channel: "latest" }
+  - { pattern: "^([1-9][0-9]*)\\.(x|[1-9][0-9]*)\\.x$" }
+  - { pattern: "^alpha$", channel: "alpha", prerelease: "alpha" }
+
+rules:
+  - { type: "breaking", release: "major", note: "Breaking Changes", body: true }
+  - { type: "feat", release: "minor", note: "Features" }
+  - { type: "fix", release: "patch", note: "Bug Fixes" }
+  - { type: "security", release: "patch", note: "Security" }
+  - { type: "perf", release: "patch", note: "Performance Improvements" }
+  - { type: "refactor", release: "patch", note: "Code Refactoring" }
+  - { type: "revert", release: "patch", note: "Reverts" }
+  - { type: "docs", scope: "readme", release: "patch" }
+  - { type: "chore" }
+  - { type: "test" }
+  - { type: "style" }
+  - { type: "build" }
+  - { type: "ci" }
