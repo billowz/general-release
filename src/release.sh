@@ -470,14 +470,16 @@ function __generate_release_note() {
 				local type="${BASH_REMATCH[1]}"
 				local scope="${BASH_REMATCH[3]}"
 				local subject="${BASH_REMATCH[4]}"
+				local matched=
 				for var in "${note_items[@]}"; do
 					if [[ $type =~ ^$(get_var $var type)$ && $scope =~ ^$(get_var $var scope)$ ]]; then
+						matched="true"
 						notei="$(get_var $var notei)"
 						body="$(get_var $var body)"
 						break
 					fi
 				done
-				if [[ $notei ]]; then
+				if [[ $matched ]]; then
 					note_array[$notei]+="
 * ${scope:+"$scope: "}$subject ([$i]($git_repo/commit/$i ))"
 				fi

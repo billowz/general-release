@@ -45,7 +45,6 @@
 		"src",
 		"plugins",
 		"bin",
-		"install.js",
 		"README.md",
 		"CHANGELOG.md"
 	],
