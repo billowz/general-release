@@ -18,8 +18,9 @@ environment:
 init:
   - git config --global core.autocrlf input
   - ps: |
+      $Host.UI.RawUI.ForegroundColor="White"
       # define colors
-      $color_normal=$host.UI.RawUI.ForegroundColor
+      $color_normal="White" # $host.UI.RawUI.ForegroundColor
       $color_red="Red"
       $color_green="Green"
       $color_yellow="Yellow"
@@ -78,7 +79,7 @@ init:
       }
 
       function LogWarn($message) {
-        ColorLog "[<y>warn</>] <y>$message"
+        ColorLog "[<y> warn</>] <y>$message"
         $msg=ParseLog $message
         Add-AppveyorMessage $msg -Category Warning
       }
@@ -135,7 +136,7 @@ install:
   # update build details
   - ps: |
       StartTimeInfo "generating build details ..."
-      sh ./bin/bin.sh preview --debug
+      sh ./bin/bin.sh preview -p appveyor --debug
       $release = $($LastExitCode -eq 0)
       ExitErron $($LastExitCode -eq 1) 1 "pre-release with error`:` $LastExitCode"
       EndTimeInfo "generated build details"

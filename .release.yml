@@ -3,7 +3,6 @@ commit:
   - CHANGELOG.md
 
 plugins:
-  - appveyor
   - github -f general-release.zip
   - npm
 

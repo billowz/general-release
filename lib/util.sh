@@ -123,26 +123,26 @@ function log_debug() {
 	if [[ $DEBUG ]]; then
 		local msg=$1
 		shift
-		log "[<g>debug</>] <g>$msg" "$@"
+		log "[<g>debug</>] <g>general-release - $msg" "$@"
 	fi
 }
 
 function log_info() {
 	local msg="$1"
 	shift
-	log "[<b> info</>] <b>$msg" "$@"
+	log "[<b> info</>] <b>general-release - $msg" "$@"
 }
 
 function log_warn() {
 	local msg="$1"
 	shift
-	log "[<y>warn</>] <y>$msg" "$@"
+	log "[<y> warn</>] <y>general-release - $msg" "$@"
 }
 
 function log_error() {
 	local msg="$1"
 	shift
-	log "[<r>error</>] <r>$msg" "$@" >&2
+	log "[<r>error</>] <r>general-release - $msg" "$@" >&2
 }
 
 time_depth=0
