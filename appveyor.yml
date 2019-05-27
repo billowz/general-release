@@ -17,13 +17,8 @@ environment:
 
 init:
   - ps: |
-      function ResetConsole(){
-        [Console]::ResetColor()
-        $Host.UI.RawUI.ForegroundColor="White"
-      }
-  - ps: ResetConsole
-  - ps: |
-      $color_normal=$host.UI.RawUI.ForegroundColor
+      $Host.UI.RawUI.ForegroundColor="White"
+      $color_normal="White"
       $color_red="Red"
       $color_green="Green"
       $color_yellow="Yellow"
@@ -138,10 +133,9 @@ install:
   # update build details
   - ps: |
       StartTimeInfo "generating build details ..."
-      sh ./bin/bin.sh preview -p appveyor --debug
+      sh ./bin/bin.sh preview -p appveyor --no-color
       $err = $LastExitCode
       $release = $($err -eq 0)
-      ResetConsole
       ExitErron $($err -eq 1) 1 "pre-release with error`:` $err"
       EndTimeInfo "generated build details"
 
@@ -153,12 +147,7 @@ deploy_script:
   - ps: |
       if (!$evn:APPVEYOR_PULL_REQUEST_NUMBER -and $release) {
         StartTimeInfo "releasing ..."
-
-        git archive --format zip -o general-release.zip master bin lib plugins src README.md CHANGELOG.md LICENSE
-
         sh ./bin/bin.sh --debug
-        $err = $LastExitCode
-        ResetConsole
-        ExitErron $($err -eq 1) 1 "release with error`:` $err"
+        ExitErron $($LastExitCode -eq 1) 1 "release with error`:` $LastExitCode"
         EndTimeInfo "released"
       }
