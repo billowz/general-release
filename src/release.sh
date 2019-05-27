@@ -328,44 +328,38 @@ function __inc_next_version() {
 
 # parse the release version
 function __parse_next_version() {
-	next_channel=
 	if [[ $version =~ $version_reg ]]; then
-		next_pre="${BASH_REMATCH[3]}"
-		if [[ "${BASH_REMATCH[5]}" != "latest" ]]; then
-			next_channel="${BASH_REMATCH[5]}"
+		if [[ "${BASH_REMATCH[3]}" ]]; then
+			next_pre="${BASH_REMATCH[3]}"
+		fi
+		if [[ "${BASH_REMATCH[5]}" ]]; then
+			if [[ "${BASH_REMATCH[5]}" == "latest" ]]; then
+				next_channel=
+			else
+				next_channel="${BASH_REMATCH[5]}"
+			fi
 		fi
 		__inc_next_version "${BASH_REMATCH[1]}"
 	else
 		[[ ! $version =~ $tag_reg ]] &&
 			exit_error "invalid version format: <y>%s</>, should be format with $version_format_reg or $tag_format_msg" "$version"
-
-		next_pre="${BASH_REMATCH[7]}"
-		next_version="${BASH_REMATCH[2]}${next_pre:+"-${next_pre}.${BASH_REMATCH[8]}"}"
-		if [[ "${BASH_REMATCH[10]}" != "latest" ]]; then
-			next_channel="${BASH_REMATCH[10]}"
+		if [[ "${BASH_REMATCH[7]}" ]]; then
+			next_pre="${BASH_REMATCH[7]}"
 		fi
+		if [[ ${BASH_REMATCH[10]} ]]; then
+			if [[ "${BASH_REMATCH[10]}" == "latest" ]]; then
+				next_channel=
+			else
+				next_channel="${BASH_REMATCH[10]}"
+			fi
+		fi
+		next_version="${BASH_REMATCH[2]}${next_pre:+"-${next_pre}.${BASH_REMATCH[8]}"}"
 		next_tag="${tag_prefix}${next_version}${next_channel:+"@$next_channel"}"
 	fi
 }
 
 # analyze the release version from commits
 function __analyze_next_version() {
-	# match branch config
-	log_debug "matching release config on the branch: <y>%s</> ..." "$branch"
-	local branch_cfg=
-	for i in "${release_branchs_[@]}"; do
-		local pattern="$(get_var $i pattern)"
-		if [[ $branch =~ $pattern ]]; then
-			local branch_cfg="$i"
-			next_pre="$(get_var $i prerelease)"
-			next_channel="$(get_var $i channel)"
-
-			log_debug "matched the release config[<y>/%s/</>], channel: <y>%s</>, pre-release: <y>%s" \
-				"$pattern" "${next_channel:-"latest"}" "$next_pre"
-			break
-		fi
-	done
-
 	if [[ ! $branch_cfg ]]; then
 		log_info "no release configuration on the branch: <y>%s" "$branch"
 		return $EX_NORELEASE
@@ -404,7 +398,7 @@ function __analyze_next_version() {
 			major) release_type="$rtype" ;;
 			minor) release_type="$rtype" ;;
 			patch) [[ $release_type != "minor" ]] && release_type="$rtype" ;;
-			prerelease) [[ ! $release_type ]] && release_type="$rtype" ;;
+			prerelease) [[ ! $release_type ]] && release_type="pre" ;;
 			*) exit_error "invalid release type: %s" "$rtype" ;;
 			esac
 
@@ -425,6 +419,7 @@ function __analyze_next_version() {
 }
 
 function __release_version() {
+	branch_cfg=
 	next_parts=
 	next_pre=
 	next_channel=
@@ -436,10 +431,27 @@ function __release_version() {
 		next_tag=
 		err=$EX_NORELEASE
 		log_info "canceled release on Request Pull(<y>%s</>)" "$rp"
-	elif [[ $version ]]; then
-		__parse_next_version
 	else
-		__analyze_next_version
+		# match branch config
+		log_debug "matching release config on the branch: <y>%s</> ..." "$branch"
+		for i in "${release_branchs_[@]}"; do
+			local pattern="$(get_var $i pattern)"
+			if [[ $branch =~ $pattern ]]; then
+				local branch_cfg="$i"
+				next_pre="$(get_var $i prerelease)"
+				next_channel="$(get_var $i channel)"
+
+				log_debug "matched the release config[<y>/%s/</>], channel: <y>%s</>, pre-release: <y>%s" \
+					"$pattern" "${next_channel:-"latest"}" "$next_pre"
+				break
+			fi
+		done
+
+		if [[ $version ]]; then
+			__parse_next_version
+		else
+			__analyze_next_version
+		fi
 	fi
 	err=$?
 	__load_plugins "version"
