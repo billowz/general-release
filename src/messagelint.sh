@@ -5,13 +5,13 @@ source $root_dir/lib/util.sh
 source $root_dir/lib/config.sh
 
 function print_usage() {
-	color_log "<p>Useage<g>
+	color_log "<p>Usage<g>
   %s [\<options>] \<message>
 <p>Options<g>
   -c,--config                   [string] Release config file(.yml), default: <y>%s, %s</>
   --debug                       [enable] Enable debug logging, default: <y>false</>
   --no-color                    [enable] Disable the color output, default: <y>false</>
-  -h,--help                     Print useage" \
+  -h,--help                     Print usage" \
 		"$BASH_SOURCE" \
 		"$(join ", " "${default_user_config_files[@]}")" \
 		"$root_dir/src/release.yml"

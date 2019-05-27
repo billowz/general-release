@@ -104,7 +104,7 @@ function color_log() {
 		msg="${msg}${BASH_REMATCH[3]}${BASH_REMATCH[4]}"
 		input="${BASH_REMATCH[6]}"
 	done
-	printf "${color_white}$(echo "${msg}${input}" | sed 's/\\</</g')\n${color_white}${color_normal}" "$@"
+	printf "${color_white}$(echo "${msg}${input}" | sed 's/\\</</g')\n${color_white}" "$@"
 }
 
 COLOR_LOG="yes"

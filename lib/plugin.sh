@@ -59,36 +59,26 @@ function plugin_init() {
 }
 
 function plugin_usage() {
+	color_log "<g>  %s [\<options>]" "$(get_plugin_name)"
+}
+
+function plugin_options() {
 	return 0
 }
 
 function print_usage() {
-	color_log "<p>Useage<g>
-  %s [\<options>]" \
-		"${BASH_SOURCE[2]}"
+	color_log "<p>Usage"
 
-	color_log "<p>Plugin Options
-%s<g>  -d,--dry-run                  [enable] Skip publishing, default: <y>false</>
+	plugin_usage
+
+	color_log "<p>Plugin Options"
+
+	plugin_options
+
+	color_log "<g>  -d,--dry-run                  [enable] Skip publishing, default: <y>false</>
   --debug                       [enable] Enable debug logging, default: <y>false</>
   --no-color                    [enable] Disable the color output, default: <y>false</>
-  -h,--help                     Print useage" \
-		"$(plugin_usage)"
-
-	if [[ $1 ]]; then
-		color_log "<p>Plugin Context<g>
-  hook                          [string] Release hook: <y>load | version | before-deploy | deploy</>
-  env_file                      [string] Output variables, on <y>load</> hook
-  git_repo                      [string] Git repository URL
-  branch                        [string] Git branch name
-  tag_prefix                    [string] Git tag prefix
-  prev_tag                      [string] Git last tag name
-  tag                           [string] Git tag name
-  version                       [string] Release version
-  channel                       [string] Release Channel
-  prerelease                    [string] Pre-release id
-  release_note                  [string] Release Note
-  dry_run                       [string] Skip publishing"
-	fi
+  -h,--help                     Print usage"
 }
 
 function bad_option() {
@@ -98,8 +88,7 @@ function bad_option() {
 }
 
 function plugin_state() {
-	log "<g>
-  Git repository URL            <y>%s</>
+	color_log "<g>  Git repository URL            <y>%s</>
   Git branch name               <y>%s</>
   Git tag prefix                <y>%s</>
   Git tag name                  <y>%s</>
@@ -164,7 +153,13 @@ function bootstrap() {
 			[[ $i -eq 0 ]] && bad_option "unknown option: $arg"
 			((i--))
 			;;
-		*) bad_option "unknown command: $arg" ;;
+		*)
+			plugin_arg "$arg" "$@"
+			i=$?
+			[[ $i -lt 0 ]] && plugin_exit_error "plugin_arg returned $i, should be >= 0"
+			[[ $i -eq 0 ]] && bad_option "unknown command: $arg"
+			((i--))
+			;;
 		esac
 
 		for (( ; i > 0; i--)); do
@@ -180,7 +175,7 @@ function bootstrap() {
 		[[ ! $branch ]] && plugin_exit_error "invalid release context, miss the git branch"
 
 		hook=${hook/-/_}
-		if [[ $hook == *"deploy" ]]; then
+		if [[ $hook == *"deploy" || $hook == "deploy-failed" ]]; then
 			[[ ! $tag ]] && plugin_exit_error "invalid release context, miss the release git tag"
 			[[ ! $version ]] && plugin_exit_error "invalid release context, miss the release version"
 		fi

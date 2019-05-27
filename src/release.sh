@@ -20,8 +20,8 @@ for i in $plugin_dir/*.sh; do
 	default_plugins+=("$(echo $i | sed "s/.*\/\(.\+\)\.sh/\1/g")")
 done
 
-function print_useage() {
-	color_log "<p>Useage<g>
+function print_usage() {
+	color_log "<p>Usage<g>
   %s [\<options>]
 <p>Options<g>
   -c,--config                   [string] Release config file(.yml), default: <y>%s, %s</>
@@ -53,7 +53,7 @@ function print_useage() {
   -d,--dry-run                  [enable] Skip publishing, default: <y>false</>
   --debug                       [enable] Enable debug logging, default: <y>false</>
   --no-color                    [enable] Disable the color output, default: <y>false</>
-  -h,--help                     Print useage" \
+  -h,--help                     Print usage" \
 		"$BASH_SOURCE" \
 		"$(join ", " "${default_user_config_files[@]}")" \
 		"$root_dir/src/release.yml" \
@@ -65,6 +65,8 @@ function print_useage() {
 
 function __load_plugins() {
 	local hook="$1"
+	local noexit="$2"
+	local err=
 	local env_file=
 	if [[ $hook == "load" ]]; then
 		env_file=".release.env"
@@ -89,20 +91,27 @@ function __load_plugins() {
 			${no_color_log:+'--no-color'} \
 			${DEBUG:+'--debug'}
 
-		exit_erron $? "load plugin[%s: %s] with error: $?" "${plugin_labels[i]}" "$hook"
-
-		if [[ $env_file && -f $env_file ]]; then
-			eval "$(cat $env_file)"
-			local err=$?
-			rm -f $env_file
-			exit_erron $err "load plugin[%s: %s] variables with error: $err" "${plugin_labels[i]}" "$hook"
+		err=$?
+		if [[ $err -eq 0 ]]; then
+			if [[ $env_file && -f $env_file ]]; then
+				eval "$(cat $env_file)"
+				err=$?
+				rm -f $env_file
+				log_error "load plugin[%s: %s] variables with error: $err" "${plugin_labels[i]}" "$hook"
+				[[ ! $noexit ]] && exit $err
+				return $err
+			fi
+		else
+			log_error "load plugin[%s: %s] with error: $?" "${plugin_labels[i]}" "$hook"
+			[[ ! $noexit ]] && exit $err
+			return $err
 		fi
 	done
 }
 
 function __bad_opt() {
 	log_error "$@"
-	print_useage
+	print_usage
 	exit $EX_ERR
 }
 
@@ -147,7 +156,7 @@ function __parse_opts() {
 		--debug) DEBUG="true" && i=0 ;;
 		--no-color) no_color_log="true" && COLOR_LOG= && i=0 ;;
 		-h | --help)
-			print_useage
+			print_usage
 			exit 0
 			;;
 		-*) __bad_opt "unknown option: $arg" ;;
@@ -571,7 +580,14 @@ if [[ $next_tag ]]; then
 				__generate_changelog
 			fi
 			__release
-			__load_plugins "deploy"
+			__load_plugins "deploy" "true"
+			deploy_err=$?
+			if [[ $deploy_err -eq 0 ]]; then
+				__load_plugins "after-deploy"
+			else
+				__load_plugins "deploy-failed"
+				exit $deploy_err
+			fi
 		fi
 		log_info "deployed <y>%s</> on branch: <y>%s</>${dry_run:+" in <y>dry-run</> mode"}" "$next_tag" "$branch"
 	else

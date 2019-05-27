@@ -23,16 +23,15 @@ function plugin_arg() {
 	return 0
 }
 
-function plugin_usage() {
+function plugin_options() {
 	color_log "<g>  -f,--file                     [string] Add a publish file
   -t,--token                    [string] GitHub auth token, default: <y>ENV:GITHUB_TOKEN</>"
 }
 
 function print_state() {
 	plugin_debug "Options:<g>
-  files                         <y>%s</>%s" \
-		"$(join ", " "${files[@]}")" \
-		"$(plugin_state)"
+  files                         <y>%s</>" "$(join ", " "${files[@]}")"
+	plugin_state
 }
 
 function init() {

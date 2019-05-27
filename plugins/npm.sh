@@ -3,7 +3,7 @@
 source $(dirname $BASH_SOURCE)/../lib/plugin.sh
 
 plugin_name="npm"
-plugin_before_deploy="print_state && init && check_auth"
+plugin_before_deploy="print_state && init && update_version"
 plugin_deploy="init && deploy"
 
 default_registry='https://registry.npmjs.org/'
@@ -45,7 +45,7 @@ function plugin_arg() {
 	return 0
 }
 
-function plugin_usage() {
+function plugin_options() {
 	color_log "<g>  -r,--registry                 [string] NPM registry URL, default: <y>%s</>
   -a,--access                   [string] Package access, default: <y>%s</>
   -t,--token                    [string] NPM auth token, default: <y>ENV:NPM_TOKEN</>" \
@@ -56,10 +56,10 @@ function plugin_usage() {
 function print_state() {
 	plugin_debug "Options:<g>
   npm registry                  <y>%s</>
-  npm access                    <y>%s</>%s" \
+  npm access                    <y>%s</>" \
 		"$registry" \
-		"$access" \
-		"$(plugin_state)"
+		"$access"
+	plugin_state
 }
 
 function init() {
@@ -78,7 +78,7 @@ function init() {
 	fi
 }
 
-function check_auth() {
+function update_version() {
 	plugin_debug "checking auth on <y>%s</> ..." "$registry"
 
 	auth=$(npm whoami --registry $registry)
@@ -88,7 +88,7 @@ function check_auth() {
 	plugin_debug "checking the npm package: <y>%s</> on <y>%s</> ..." "$package" "$registry"
 
 	if [[ "$(npm view $package version --registry $registry 2>/dev/null)" ]]; then
-		plugin_exit_error "the npm package: <y>%s</> is exist""$package"
+		plugin_exit_error "the npm package: <y>%s</> is exist" "$package"
 	fi
 
 	plugin_debug "updating version in <y>package.json"

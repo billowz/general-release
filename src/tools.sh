@@ -32,7 +32,7 @@ function bad_option() {
 }
 
 function print_usage() {
-	color_log "<p>Useage"
+	color_log "<p>Usage"
 	if [[ ! $cmd || $cmd == "install" ]]; then
 		color_log "  <g>%s install [\<options>]" "$BASH_SOURCE"
 	fi
@@ -55,7 +55,7 @@ function print_usage() {
   --debug                       [enable] Enable debug logging, default: <y>false</>
   --no-color                    [enable] Disable the color template, default: <y>false</>"
 	fi
-	color_log "  <g>-h,--help                     Print useage"
+	color_log "  <g>-h,--help                     Print usage"
 }
 
 cmd="$1"

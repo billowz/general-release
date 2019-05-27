@@ -29,6 +29,11 @@ Automatic Release Tool for Git repository using bash shell
 - [x] Validate the commit message
 - [x] Tools: commit template and commit linter
 
+## Dependencies
+
+- Bash Shell
+- Git (`>=1.17.0`)
+
 ## Commit Message Format
 
 Each commit message consists of one or more headers and bodies. The header has a special format that includes a type, a scope and a subject:
@@ -302,7 +307,7 @@ The header is mandatory and the scope of the header is optional.
 
 ## Plugin API
 
-- Useage
+- Usage
 
   ```bash
   sh general-release/bin/bin.sh -p "github -f general-release.zip --debug" -p "npm --debug" -p "coustom.sh --debug"
@@ -311,26 +316,36 @@ The header is mandatory and the scope of the header is optional.
 - _`./src/plugin.sh`_
   - Methods
 
-Name        | Type                   | Description
-------------|------------------------|-------------------
-`bootstrap` | `function(options...)` | Running the plugin
+Name                | Type                                                | Description
+--------------------|-----------------------------------------------------|---------------------------------------
+`bootstrap`         | `function(...)`                                     | Running the plugin, `bootstrap "$@"`
+`plugin_state`      | `function()`                                        | Print running state of the plugin
+`print_usage`       | `function()`                                        | Print usage
+`plugin_debug`      | `function(msg, ...)`                                | Print debug
+`plugin_info`       | `function(msg, ...)`                                | Print info
+`plugin_warn`       | `function(msg, ...)`                                | Print warn
+`plugin_error`      | `function(msg, ...)`                                | Print error
+`plugin_exit_error` | `function(int exit_code?, msg, ...)`                | Exit and print error
+`plugin_exit_erron` | `function(int condition?,int exit_code?, msg, ...)` | Exit and print error on condition != 0
+
 
   - Extensions
 
-Name            | Type                            | Description
-----------------|---------------------------------|-----------------------------------------------------------
-`plugin_name`   | `string`                        | The plugin name
-`plugin_usage`  | `function()`                    | Print usage message callback
-`plugin_arg`    | `function(opt_name, opt_value)` | Option parser of the plugin
-`plugin_init`   | `function(hook)`                | Initial callback of the plugin, called before execute hook
-`plugin_{hook}` | `string`                        | Command of the plugin hook
+Name             | Type                            | Description
+-----------------|---------------------------------|-----------------------------------------------------------
+`plugin_name`    | `string`                        | The plugin name
+`plugin_arg`     | `function(opt_name, opt_value)` | Option parser of the plugin
+`plugin_init`    | `function(hook)`                | Initial callback of the plugin, called before execute hook
+`plugin_{hook}`  | `string`                        | Command of the plugin hook
+`plugin_usage`   | `function()`                    | Print usage message
+`plugin_options` | `function()`                    | Print plugin options
 
   - Plugin Context
 
 
 Name           | Type      | Description
----------------|-----------|----------------------------------------------------------------------
-`hook`         | string    | The plugin hook: `load`, `version`, `before_deploy`, `deploy`
+---------------|-----------|------------------------------------------------------------
+`hook`         | string    | The plugin hook
 `env_file`     | file path | Output the release variables(`branch`, `rp`) on `load` hook
 `git_repo`     | string    | Git repository url
 `branch`       | string    | Branch name
@@ -353,6 +368,8 @@ Hook Name       | Description
 `version`       | Called after release version analyzed
 `before_deploy` | Called before deploy
 `deploy`        | Called on deploy
+`after-deploy`  | Called after deploy
+`deploy-failed` | Called after deploy
 
 ### How to write a custom plugin ?
 
@@ -460,10 +477,10 @@ bootstrap "$@"
 
 Publish a npm package
 
-- Useage
+- Usage
 
   ```text
-  Useage
+  Usage
     ./plugins/npm.sh [<options>]
   Plugin Options
     -r,--registry                 [string] NPM registry URL, default: https://registry.npmjs.org/
@@ -472,17 +489,17 @@ Publish a npm package
     -d,--dry-run                  [enable] Skip publishing, default: false
     --debug                       [enable] Enable debug logging, default: false
     --no-color                    [enable] Disable the color output, default: false
-    -h,--help                     Print useage
+    -h,--help                     Print usage
   ```
 
 ### GitHub Plugin
 
 Create a release at gitHub
 
-- Useage
+- Usage
 
   ```text
-  Useage
+  Usage
     ./plugins/github.sh [<options>]
   Plugin Options
     -f,--file                     [string] Add a publish file
@@ -490,23 +507,23 @@ Create a release at gitHub
     -d,--dry-run                  [enable] Skip publishing, default: false
     --debug                       [enable] Enable debug logging, default: false
     --no-color                    [enable] Disable the color output, default: false
-    -h,--help                     Print useage
+    -h,--help                     Print usage
   ```
 
 ### Appveyor Plugin
 
 Write Build Details on Appveyor
 
-- Useage
+- Usage
 
   ```text
-  Useage
+  Usage
     ./plugins/appveyor.sh [<options>]
   Plugin Options
     -d,--dry-run                  [enable] Skip publishing, default: false
     --debug                       [enable] Enable debug logging, default: false
     --no-color                    [enable] Disable the color output, default: false
-    -h,--help                     Print useage
+    -h,--help                     Print usage
   ```
 
 ## License

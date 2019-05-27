@@ -3,8 +3,9 @@ commit:
   - CHANGELOG.md
 
 plugins:
-  - github -f general-release.zip
   - npm
+  - gzip -o general-release.tar.gz bin lib plugins src README.md CHANGELOG.md LICENSE
+  - github -f general-release.tar.gz
 
 branchs:
   - { pattern: "^master$", channel: "latest" }
@@ -13,6 +14,7 @@ branchs:
 
 rules:
   - { type: "breaking", release: "major", note: "Breaking Changes", body: true }
+  - { type: "feat", scope: "patch", release: "patch", note: "Features" }
   - { type: "feat", release: "minor", note: "Features" }
   - { type: "fix", release: "patch", note: "Bug Fixes" }
   - { type: "security", release: "patch", note: "Security" }

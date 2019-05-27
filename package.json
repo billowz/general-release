@@ -46,7 +46,8 @@
 		"plugins",
 		"bin",
 		"README.md",
-		"CHANGELOG.md"
+		"CHANGELOG.md",
+		"LICENSE"
 	],
 	"private": false,
 	"license": "MIT",

@@ -10,14 +10,14 @@ echo "$BASH_SOURCE $@"
 
 case "$1" in
 -h | --help)
-	color_log "<p>Useage<g>
+	color_log "<p>Usage<g>
   %s [deploy] [\<options>]
   %s preview [\<options>]
   %s validate [\<options>]
   %s install [\<options>]
   %s uninstall [\<options>]
 <p>Options<g>
-  -h,--help                     Print useage" \
+  -h,--help                     Print usage" \
 		"$BASH_SOURCE" "$BASH_SOURCE" "$BASH_SOURCE" "$BASH_SOURCE" "$BASH_SOURCE"
 	;;
 install)

@@ -16,11 +16,14 @@ environment:
     secure: wMVG1uvMB8qswngCrsL0eg6E/7HEaCjbAmXFM26V+sVO1OnP1/mgMu6kGX2uCWm0
 
 init:
-  - git config --global core.autocrlf input
   - ps: |
-      $Host.UI.RawUI.ForegroundColor="White"
-      # define colors
-      $color_normal="White" # $host.UI.RawUI.ForegroundColor
+      function ResetConsole(){
+        [Console]::ResetColor()
+        $Host.UI.RawUI.ForegroundColor="White"
+      }
+  - ps: ResetConsole
+  - ps: |
+      $color_normal=$host.UI.RawUI.ForegroundColor
       $color_red="Red"
       $color_green="Green"
       $color_yellow="Yellow"
@@ -34,11 +37,9 @@ init:
       $color_y=$color_yellow
       #		      	    1 2                        3   45
       $color_log_reg='(<(\/[a-zA-Z]*|[a-zA-Z]+)>|(.))((\\.|[^<])*)'
-
       function ParseLog($message){
         return $message -replace $color_log_reg, '$3$4'
       }
-
       function ColorLog([string] $message = "", [switch] $NoNewLine = $false) {
         $prev_c = "normal"
         $current_c = "normal"
@@ -64,7 +65,7 @@ init:
           }
         }
         if (!$NoNewLine) {
-            Write-Host;
+            Write-Host -ForegroundColor $color_normal;
         }
       }
 
@@ -130,6 +131,7 @@ init:
           exit $code
         }
       }
+  - git config --global core.autocrlf input
 
 install:
   - ps: LogInfo "The build worker image is $env:APPVEYOR_BUILD_WORKER_IMAGE"
@@ -137,8 +139,10 @@ install:
   - ps: |
       StartTimeInfo "generating build details ..."
       sh ./bin/bin.sh preview -p appveyor --debug
-      $release = $($LastExitCode -eq 0)
-      ExitErron $($LastExitCode -eq 1) 1 "pre-release with error`:` $LastExitCode"
+      $err = $LastExitCode
+      $release = $($err -eq 0)
+      ResetConsole
+      ExitErron $($err -eq 1) 1 "pre-release with error`:` $err"
       EndTimeInfo "generated build details"
 
 build: false
@@ -150,17 +154,11 @@ deploy_script:
       if (!$evn:APPVEYOR_PULL_REQUEST_NUMBER -and $release) {
         StartTimeInfo "releasing ..."
 
-        $SOURCE = Get-ChildItem * -Directory | Where-Object {$_.FullName -match "lib|src|plugins|bin"}
-        $DESTINATION = Join-path . -ChildPath "general-release.zip"
-        Add-Type -assembly "system.io.compression.filesystem"
-        If(Test-path $DESTINATION) {
-            Remove-item $DESTINATION
-        }
-        Foreach ($s in $SOURCE) {
-            Compress-Archive -Path $s.fullname -DestinationPath $DESTINATION -Update
-        }
+        git archive --format zip -o general-release.zip master bin lib plugins src README.md CHANGELOG.md LICENSE
 
         sh ./bin/bin.sh --debug
-        ExitErron $($LastExitCode -eq 1) 1 "release with error`:` $LastExitCode"
+        $err = $LastExitCode
+        ResetConsole
+        ExitErron $($err -eq 1) 1 "release with error`:` $err"
         EndTimeInfo "released"
       }
