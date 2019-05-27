@@ -26,7 +26,7 @@ function plugin_usage() {
 }
 
 function plugin_options() {
-	color_log "<g>  -o,--output                   [string] Write the archive to this file"
+	color_log "<g>  -o,--output                   [string] Write the archive to this file(<y>.tar.gz</>)"
 }
 
 function print_state() {

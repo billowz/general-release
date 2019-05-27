@@ -22,6 +22,7 @@ Automatic Release Tool for Git repository using bash shell
   - [x] CircleCI
   - [x] GitlabCI
   - [x] Jenkins
+- [x] Archive files (use gzip plugin)
 - [x] Create release at GitHub (use github plugin)
 - [x] Create release at NPM (use npm plugin)
 - [x] Update appveyor build details (use appveyor plugin)
@@ -410,20 +411,20 @@ function plugin_arg() {
 	return 0
 }
 
-# print the usage message
-function plugin_usage(){
+# print the options
+function plugin_options(){
   color_log "<g>  --test1                       [string] Test string option
   --test2                       [enable] Test enable option"
 }
 
 # print the plugin state
 function print_state() {
-	plugin_debug "Options:%s<g>
+	plugin_debug "Options:<g>
   test_option1                  <y>%s</>
   test_option2                  <y>%s</>" \
-		"$(plugin_state)" \
 		"$test_option1" \
 		"$test_option2"
+	plugin_state
 }
 
 # initial plugin before execute hook
@@ -473,6 +474,23 @@ bootstrap "$@"
 
 ## Plugins
 
+### Gzip Plugin
+
+Archive files by tar
+
+- Usage
+
+  ```text
+  Usage
+    gzip [<options>] [<path>...]
+  Plugin Options
+    -o,--output                   [string] Write the archive to this file(.tar.gz)
+    -d,--dry-run                  [enable] Skip publishing, default: false
+    --debug                       [enable] Enable debug logging, default: false
+    --no-color                    [enable] Disable the color output, default: false
+    -h,--help                     Print usage
+  ```
+
 ### NPM Plugin
 
 Publish a npm package
@@ -481,7 +499,7 @@ Publish a npm package
 
   ```text
   Usage
-    ./plugins/npm.sh [<options>]
+    npm [<options>]
   Plugin Options
     -r,--registry                 [string] NPM registry URL, default: https://registry.npmjs.org/
     -a,--access                   [string] Package access, default: public
@@ -500,7 +518,7 @@ Create a release at gitHub
 
   ```text
   Usage
-    ./plugins/github.sh [<options>]
+    github [<options>]
   Plugin Options
     -f,--file                     [string] Add a publish file
     -t,--token                    [string] GitHub auth token, default: ENV:GITHUB_TOKEN
@@ -518,7 +536,7 @@ Write Build Details on Appveyor
 
   ```text
   Usage
-    ./plugins/appveyor.sh [<options>]
+    appveyor [<options>]
   Plugin Options
     -d,--dry-run                  [enable] Skip publishing, default: false
     --debug                       [enable] Enable debug logging, default: false

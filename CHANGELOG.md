@@ -2,8 +2,8 @@
 
 ### Features
 
-* patch: add gzip plugin ([00fffdd](https://github.com/tao-zeng/general-release/commit/00fffdd ))
-* patch: add plugin hooks: after-deploy, deploy-failed ([00fffdd](https://github.com/tao-zeng/general-release/commit/00fffdd ))
+* add gzip plugin ([00fffdd](https://github.com/tao-zeng/general-release/commit/00fffdd ))
+* add plugin hooks: after-deploy, deploy-failed ([00fffdd](https://github.com/tao-zeng/general-release/commit/00fffdd ))
 
 # [0.0.3](https://github.com/tao-zeng/general-release/compare/v0.0.2...v0.0.3 ) (2019-05-26)
 

@@ -490,7 +490,7 @@ function __generate_release_note() {
 				done
 				if [[ $matched ]]; then
 					note_array[$notei]+="
-* ${scope:+"$scope: "}$subject ([$i]($git_repo/commit/$i ))"
+* $subject ([$i]($git_repo/commit/$i ))"
 				fi
 			done <<<"$(git show -s --format=%B $i)"
 
