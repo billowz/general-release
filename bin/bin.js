@@ -21,6 +21,7 @@ if (/^(install|uninstall)$/.test(cmd)) {
 		} else if (Array.isArray(cfg.tools)) {
 			cfg.tools.forEach(t => args.splice(optIdx, 0, `--${t}`));
 		}
+		args.splice(optIdx, 0, "--no-color");
 	}
 	if (cmd === "install" && cfg.commitTemplate) {
 		args.splice(optIdx, 0, "--template", cfg.commitTemplate);
