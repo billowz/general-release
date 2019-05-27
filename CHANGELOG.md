@@ -1,3 +1,9 @@
+# [0.0.6](https://github.com/tao-zeng/general-release/compare/v0.0.5...v0.0.6 ) (2019-05-27)
+
+### Bug Fixes
+
+* Add execute permission for the shell scripts ([d3f59cf](https://github.com/tao-zeng/general-release/commit/d3f59cf ))
+
 # [0.0.5](https://github.com/tao-zeng/general-release/compare/v0.0.4...v0.0.5 ) (2019-05-27)
 
 ### Bug Fixes
