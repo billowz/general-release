@@ -1,3 +1,10 @@
+# [0.0.8](https://github.com/tao-zeng/general-release/compare/v0.0.7...v0.0.8 ) (2019-05-27)
+
+### Bug Fixes
+
+* fix pre-release ([4bd2f94](https://github.com/tao-zeng/general-release/commit/4bd2f94 ))
+* load the default branch config on specified version ([4bd2f94](https://github.com/tao-zeng/general-release/commit/4bd2f94 ))
+
 # [0.0.7](https://github.com/tao-zeng/general-release/compare/v0.0.6...v0.0.7 ) (2019-05-27)
 
 ### Bug Fixes
