@@ -1,3 +1,9 @@
+# [0.0.5](https://github.com/tao-zeng/general-release/compare/v0.0.4...v0.0.5 ) (2019-05-27)
+
+### Bug Fixes
+
+* remove scope from release note ([c6ea871](https://github.com/tao-zeng/general-release/commit/c6ea871 ))
+
 # [0.0.4](https://github.com/tao-zeng/general-release/compare/v0.0.3...v0.0.4 ) (2019-05-27)
 
 ### Features
