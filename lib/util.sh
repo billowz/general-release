@@ -73,7 +73,7 @@ color_n=$color_normal
 function parse_log() {
 	local msg=$(echo "$1" | sed -e 's/\(^\|[^\\]\)\(<\/[a-zA-Z]*>\|<[a-zA-Z]\+>\)/\1/g' -e 's/\\</</g')
 	shift
-	printf "$msg\n" $@
+	printf "$msg\n" "$@"
 }
 
 #              1 2                        3   45           6
