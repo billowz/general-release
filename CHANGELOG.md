@@ -1,3 +1,9 @@
+# [0.0.7](https://github.com/tao-zeng/general-release/compare/v0.0.6...v0.0.7 ) (2019-05-27)
+
+### Bug Fixes
+
+* fix no-color log ([215d360](https://github.com/tao-zeng/general-release/commit/215d360 ))
+
 # [0.0.6](https://github.com/tao-zeng/general-release/compare/v0.0.5...v0.0.6 ) (2019-05-27)
 
 ### Bug Fixes
