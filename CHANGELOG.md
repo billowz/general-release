@@ -1,3 +1,10 @@
+# [0.0.4](https://github.com/tao-zeng/general-release/compare/v0.0.3...v0.0.4 ) (2019-05-27)
+
+### Features
+
+* patch: add gzip plugin ([00fffdd](https://github.com/tao-zeng/general-release/commit/00fffdd ))
+* patch: add plugin hooks: after-deploy, deploy-failed ([00fffdd](https://github.com/tao-zeng/general-release/commit/00fffdd ))
+
 # [0.0.3](https://github.com/tao-zeng/general-release/compare/v0.0.2...v0.0.3 ) (2019-05-26)
 
 ### Bug Fixes
