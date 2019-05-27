@@ -1,3 +1,9 @@
+# [0.0.9](https://github.com/tao-zeng/general-release/compare/v0.0.8...v0.0.9 ) (2019-05-27)
+
+### Bug Fixes
+
+* print without color on npm install/uninstall ([f8c833f](https://github.com/tao-zeng/general-release/commit/f8c833f ))
+
 # [0.0.8](https://github.com/tao-zeng/general-release/compare/v0.0.7...v0.0.8 ) (2019-05-27)
 
 ### Bug Fixes
