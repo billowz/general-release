@@ -1,6 +1,7 @@
 # General Release
 
-[![Build][build-badge]][ci]
+[![Appveyor][appveyor-badge]][appveyor]
+[![Travis][travis-badge]][travis]
 [![Version][version-badge]][npm]
 [![Downloads][downloads-badge]][npm]
 
@@ -84,7 +85,6 @@ The header is mandatory and the scope of the header is optional.
 ### Shell
 
 - Download general-release
-
   ```bash
   # download
   curl -L -s https://github.com/billowz/general-release/releases/download/$(curl -L -s -H 'Accept: application/json' https://github.com/billowz/general-release/releases/latest | sed -e 's/.*"tag_name":"\([^"]*\)".*/\1/')/general-release.zip -o general-release.zip
@@ -96,92 +96,92 @@ The header is mandatory and the scope of the header is optional.
 
   ```bash
   # deploy with github plugin
-  sh general-release/bin/bin.sh -c .release.yml -p "github -f release.zip" --debug
+  general-release/bin/bin.sh -c .release.yml -p "github -f release.zip" --debug
   # or
-  sh general-release/bin/bin.sh deploy -c .release.yml -p "github -f release.zip" --debug
+  general-release/bin/bin.sh deploy -c .release.yml -p "github -f release.zip" --debug
 
   # dry-run mode
-  sh general-release/bin/bin.sh -c .release.yml -p "github -f release.zip" --debug --dry-run
+  general-release/bin/bin.sh -c .release.yml -p "github -f release.zip" --debug --dry-run
   ```
 
 - Preview Release
 
   ```bash
-  sh general-release/bin/bin.sh preview -c .release.yml --debug
+  general-release/bin/bin.sh preview -c .release.yml --debug
   # or
-  sh general-release/bin/bin.sh --no-deploy -c .release.yml --debug
+  general-release/bin/bin.sh --no-deploy -c .release.yml --debug
   ```
 
 - Release with the specialed version
 
   ```bash
   # release with specified version: 1.0.0
-  sh general-release/bin/bin.sh -v 1.0.0
+  general-release/bin/bin.sh -v 1.0.0
 
   # release with specified version on the specified channel
-  sh general-release/bin/bin.sh -v 1.0.0@next
+  general-release/bin/bin.sh -v 1.0.0@next
 
   # release with specified pre-release version
-  sh general-release/bin/bin.sh -v 1.0.0-alpha
+  general-release/bin/bin.sh -v 1.0.0-alpha
 
   # release with specified pre-release version on the specified channel
-  sh general-release/bin/bin.sh -v 1.0.0-alpha@next
+  general-release/bin/bin.sh -v 1.0.0-alpha@next
 
   # increment the version by the specified level from the last git-tag
-  sh general-release/bin/bin.sh -v minor
+  general-release/bin/bin.sh -v minor
 
   # increment the version by the specified level on the specified channel from the last git-tag
-  sh general-release/bin/bin.sh -v minor@next
+  general-release/bin/bin.sh -v minor@next
 
   # increment the pre-release version by the specified level from the last git-tag
-  sh general-release/bin/bin.sh -v pre-alpha
+  general-release/bin/bin.sh -v pre-alpha
 
   # increment the pre-release version by the specified level on the specified channel from the last git-tag
-  sh general-release/bin/bin.sh -v pre-alpha@next
+  general-release/bin/bin.sh -v pre-alpha@next
   ```
 
 - Validate the commit message
 
   ```bash
-  sh general-release/bin/bin.sh validate -c .release.yml "feat: test"
+  general-release/bin/bin.sh validate -c .release.yml "feat: test"
   ```
 
 - Install the Tools: commit-linter, commit-template
 
   ```bash
   # install commit template and commit linter
-  sh general-release/bin/bin.sh install -c .release.yml
+  general-release/bin/bin.sh install -c .release.yml
   # of
-  sh general-release/bin/bin.sh install -c .release.yml --commit-lint --commit-template
+  general-release/bin/bin.sh install -c .release.yml --commit-lint --commit-template
 
   # install commit template
-  sh general-release/bin/bin.sh install -c .release.yml --commit-template
+  general-release/bin/bin.sh install -c .release.yml --commit-template
 
   # install commit template on the specified file
-  sh general-release/bin/bin.sh install -c .release.yml --template ./commit-template
+  general-release/bin/bin.sh install -c .release.yml --template ./commit-template
   ```
 
 - Uninstall the Tools: commit-linter, commit-template
 
   ```bash
   # uninstall commit template and commit linter
-  sh general-release/bin/bin.sh uninstall
+  general-release/bin/bin.sh uninstall
   # of
-  sh general-release/bin/bin.sh uninstall --commit-lint --commit-template
+  general-release/bin/bin.sh uninstall --commit-lint --commit-template
 
   # uninstall commit template
-  sh general-release/bin/bin.sh uninstall --commit-template
+  general-release/bin/bin.sh uninstall --commit-template
   ```
 
 - Print Usage
 
   ```bash
-  sh general-release/bin/bin.sh -h
-  sh general-release/bin/bin.sh deploy -h
-  sh general-release/bin/bin.sh preview -h
-  sh general-release/bin/bin.sh validate -h
-  sh general-release/bin/bin.sh install -h
-  sh general-release/bin/bin.sh uninstall -h
+  general-release/bin/bin.sh -h
+  general-release/bin/bin.sh deploy -h
+  general-release/bin/bin.sh preview -h
+  general-release/bin/bin.sh validate -h
+  general-release/bin/bin.sh install -h
+  general-release/bin/bin.sh uninstall -h
   ```
 
 ### NodeJS
@@ -311,7 +311,7 @@ The header is mandatory and the scope of the header is optional.
 - Usage
 
   ```bash
-  sh general-release/bin/bin.sh -p "github -f general-release.zip --debug" -p "npm --debug" -p "coustom.sh --debug"
+  general-release/bin/bin.sh -p "github -f general-release.zip --debug" -p "npm --debug" -p "coustom.sh --debug"
   ```
 
 - _`./src/plugin.sh`_
@@ -548,8 +548,10 @@ Write Build Details on Appveyor
 
 [MIT](http://opensource.org/licenses/MIT)
 
-[ci]: https://ci.appveyor.com/project/billowz/general-release/branch/master
-[build-badge]: https://img.shields.io/appveyor/ci/billowz/general-release/master.svg
+[appveyor]: https://ci.appveyor.com/project/billowz/general-release/branch/master
+[appveyor-badge]: https://img.shields.io/appveyor/ci/billowz/general-release/master.svg
+[travis]: https://travis-ci.org/billowz/general-release
+[travis-badge]: https://img.shields.io/travis/billowz/general-release/master.svg
 [npm]: https://www.npmjs.com/package/general-release/v/latest
 [downloads-badge]: https://img.shields.io/npm/dt/general-release.svg
 [version-badge]: https://img.shields.io/npm/v/general-release/latest.svg

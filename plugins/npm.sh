@@ -85,26 +85,26 @@ function update_version() {
 
 	plugin_exit_erron $? "no auth on <y>%s</>" "$registry"
 
-	plugin_debug "checking the npm package: <y>%s</> on <y>%s</> ..." "$package" "$registry"
+	plugin_debug "checking the npm package: <y>%s</> on <y>%s</> by <y>$auth</> ..." "$package" "$registry"
 
 	if [[ "$(npm view $package version --registry $registry 2>/dev/null)" ]]; then
 		plugin_exit_error "the npm package: <y>%s</> is exist" "$package"
 	fi
 
-	plugin_debug "updating version in <y>package.json"
+	plugin_debug "updating version in <y>package.json</> by <y>$auth</> ..."
 
 	npm --no-git-tag-version --force --allow-same-version version $version 2>/dev/null
 }
 
 function deploy() {
-	plugin_debug "publishing npm package <y>%s</> ..." "$package"
+	plugin_debug "publishing npm package <y>%s</> by <y>$auth</> ..." "$package"
 
 	local out=
 	out=$(npm publish --tag ${channel:-"latest"} --access $access ${dry_run:+"--dry-run"} --registry "$registry" 2>&1)
 	local err=$?
 
-	plugin_exit_erron $err "publish npm package <y>%s</> with error: $err\n%s" "$package" "$out"
-	plugin_info "published npm package <y>%s</>\n<w>%s" "$package" "$out"
+	plugin_exit_erron $err "publish npm package <y>%s</> by <y>$auth</> with error: $err\n%s" "$package" "$out"
+	plugin_info "published npm package <y>%s</> by <y>$auth</>\n<w>%s" "$package" "$out"
 }
 
 bootstrap "$@"

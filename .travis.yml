@@ -1,0 +1,9 @@
+language: node_js
+node_js:
+  - "10"
+script:
+  - ./bin/bin.sh --debug -d
+  - node ./bin/bin.js --debug -d
+os:
+  - linux
+  - osx

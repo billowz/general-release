@@ -22,25 +22,25 @@ case "$1" in
 	;;
 install)
 	shift
-	sh "$src_dir/tools.sh" install "$@"
+	$src_dir/tools.sh install "$@"
 	;;
 uninstall)
 	shift
-	sh "$src_dir/tools.sh" uninstall "$@"
+	$src_dir/tools.sh uninstall "$@"
 	;;
 validate)
 	shift
-	sh "$src_dir/messagelint.sh" "$@"
+	$src_dir/messagelint.sh "$@"
 	;;
 preview)
 	shift
-	sh "$src_dir/release.sh" "$@" --no-deploy
+	$src_dir/release.sh "$@" --no-deploy
 	;;
 deploy)
 	shift
-	sh "$src_dir/release.sh" "$@"
+	$src_dir/release.sh "$@"
 	;;
 *)
-	sh "$src_dir/release.sh" "$@"
+	$src_dir/release.sh "$@"
 	;;
 esac
