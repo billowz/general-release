@@ -1,3 +1,9 @@
+# [0.0.11](https://github.com/billowz/general-release/compare/v0.0.10...v0.0.11 ) (2019-05-30)
+
+### Bug Fixes
+
+* fix plugin state debug ([1f5f7ab](https://github.com/billowz/general-release/commit/1f5f7ab ))
+
 # [0.0.10](https://github.com/billowz/general-release/compare/v0.0.9...v0.0.10 ) (2019-05-30)
 
 # [0.0.9](https://github.com/tao-zeng/general-release/compare/v0.0.8...v0.0.9 ) (2019-05-27)
