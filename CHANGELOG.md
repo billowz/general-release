@@ -1,3 +1,9 @@
+# [0.0.12](https://github.com/billowz/general-release/compare/v0.0.11...v0.0.12 ) (2019-05-30)
+
+### Bug Fixes
+
+* fix debug print ([a1d467b](https://github.com/billowz/general-release/commit/a1d467b ))
+
 # [0.0.11](https://github.com/billowz/general-release/compare/v0.0.10...v0.0.11 ) (2019-05-30)
 
 ### Bug Fixes
