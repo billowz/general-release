@@ -88,7 +88,8 @@ function bad_option() {
 }
 
 function plugin_state() {
-	color_log "<g>  Git repository URL            <y>%s</>
+	if [[ $DEBUG ]]; then
+		color_log "<g>  Git repository URL            <y>%s</>
   Git branch name               <y>%s</>
   Git tag prefix                <y>%s</>
   Git tag name                  <y>%s</>
@@ -98,16 +99,17 @@ function plugin_state() {
   Git last tag name             <y>%s</>
   Rlease Note                   <y>%s</>
   Dry Run                       <y>%s</>" \
-		"$git_repo" \
-		"$branch" \
-		"$tag_prefix" \
-		"$tag" \
-		"$version" \
-		"$channel" \
-		"$prerelease" \
-		"$prev_tag" \
-		"${release_note:+"***"}" \
-		"${dry_run:-"false"}"
+			"$git_repo" \
+			"$branch" \
+			"$tag_prefix" \
+			"$tag" \
+			"$version" \
+			"$channel" \
+			"$prerelease" \
+			"$prev_tag" \
+			"${release_note:+"***"}" \
+			"${dry_run:-"false"}"
+	fi
 }
 
 function bootstrap() {

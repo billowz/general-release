@@ -265,9 +265,10 @@ function __parse_opts() {
 
 function __load_prev_tag() {
 	# load the previous tag
-	log_debug "loading the previous release tag on the branch: <y>%s</> ..." "$branch"
-
+	log_debug "git fetch --prune --prune-tags --tags"
 	git fetch --prune --prune-tags --tags
+
+	log_debug "loading the previous release tag on the branch: <y>%s</> ..." "$branch"
 
 	prev_tag="$(git describe --tags --abbrev=0 2>/dev/null)"
 
@@ -547,11 +548,12 @@ function __release() {
 			channel "$next_channel" \
 			prerelease "$next_pre")"
 
-		log_debug "commiting <y>\"%s\"</> with ${commit_note:+"<y>note</> and "}files: <y>%s" \
-			"$msg" \
-			"$(join ", " "${commit_files[@]}")"
+		log_debug "git add %s --force --ignore-errors" "${commit_files[@]}"
 
 		git add ${commit_files[@]} --force --ignore-errors
+
+		log_debug "git commit -m \"%s\"" "$msg"
+
 		git_commit "$msg" "${commit_note:+"$release_note"}"
 
 		log_info "commited <y>\"%s\"</> with ${commit_note:+"<y>note</> and "}files: <y>%s" \
