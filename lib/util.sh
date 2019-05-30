@@ -73,7 +73,7 @@ color_n=$color_normal
 function parse_log() {
 	local msg=$(echo "$1" | sed -e 's/\(^\|[^\\]\)\(<\/[a-zA-Z]*>\|<[a-zA-Z]\+>\)/\1/g' -e 's/\\</</g')
 	shift
-	printf "$msg\n" "$@"
+	printf "$msg\n" "$@" >&1
 }
 
 #              1 2                        3   45           6
@@ -96,7 +96,7 @@ function color_log() {
 			current_c=$c
 			c="color_$c"
 			if [[ ! "${!c}" ]]; then
-				printf "invalid color: %s\n" $current_c
+				printf "invalid color: %s\n" $current_c >&2
 				exit $EX_ERR
 			fi
 			msg="${msg}${!c}"
@@ -104,7 +104,7 @@ function color_log() {
 		msg="${msg}${BASH_REMATCH[3]}${BASH_REMATCH[4]}"
 		input="${BASH_REMATCH[6]}"
 	done
-	printf "${color_white}$(echo "${msg}${input}" | sed 's/\\</</g')\n${color_white}" "$@"
+	printf "${color_white}$(echo "${msg}${input}" | sed 's/\\</</g')\n${color_white}" "$@" >&1
 }
 
 COLOR_LOG="yes"

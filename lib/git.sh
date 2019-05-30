@@ -13,11 +13,11 @@ git_commit_email="${GIT_COMMIT_EMAIL:-"billowz@hotmail.com"}"
 function git_commit() {
 	local msg="$1"
 	local note="$2"
-	if [[ $note ]]; then
-		git commit -m "$msg" -m "$note"
+	if [[ "$note" ]]; then
+		git commit -n -m "$msg" -m "$note"
 		exit_erron $? "git commit <y>\"%s\"</> with error: $?" "$msg"
 	else
-		git commit -m "$msg"
+		git commit -n -m "$msg"
 		exit_erron $? "git commit <y>\"%s\"</> with error: $?" "$msg"
 	fi
 }

@@ -237,7 +237,7 @@ function validate_message() {
 		exit_code 1 log "<r>✗   empty message header
 <r>✗   the message header must be:<w>
     \<type>(\<scope>): \<subject>
-    \<body>" "$line"
+    \<body>" "$line" >&2
 	fi
 
 	if [[ $message =~ ^Merge ]]; then
@@ -261,7 +261,7 @@ function validate_message() {
 			if [[ ! $rule ]]; then
 				exit_code 1 log "<r>⚐   <w>%s
 <r>✗   the message type(<w>%s</>) must be one of: <w>%s" \
-					"$line" "$type" "$(echo $(__parse_types) | sed "s/ / | /g")"
+					"$line" "$type" "$(echo $(__parse_types) | sed "s/ / | /g")" >&2
 			fi
 
 			log "<g>✓   %s" "$line"
@@ -273,12 +273,12 @@ function validate_message() {
 				exit_code 1 log "<r>⚐   <w>%s
 <r>✗   the message format must be:<w>
     \<type>(\<scope>): \<subject>
-    \<body>" "$line"
+    \<body>" "$line" >&2
 			else
 				exit_code 1 log "<r>✗   empty message header
 <r>✗   the message header must be:<w>
     \<type>(\<scope>): \<subject>
-    \<body>" "$line"
+    \<body>" "$line" >&2
 			fi
 		fi
 	done <<<"$message"
