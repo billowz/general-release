@@ -15,10 +15,11 @@ function git_commit() {
 	local note="$2"
 	if [[ $note ]]; then
 		git commit -m "$msg" -m "$note"
+		exit_erron $? "git commit <y>\"%s\"</> with error: $?" "$msg"
 	else
 		git commit -m "$msg"
+		exit_erron $? "git commit <y>\"%s\"</> with error: $?" "$msg"
 	fi
-	exit_erron $? "git commit <y>\"%s\"</> with error: $?" "$msg"
 }
 
 # git_push(<branch>, options...)

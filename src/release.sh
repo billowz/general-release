@@ -548,7 +548,7 @@ function __release() {
 			channel "$next_channel" \
 			prerelease "$next_pre")"
 
-		log_debug "git add %s --force --ignore-errors" "${commit_files[@]}"
+		log_debug "git add %s --force --ignore-errors" "${commit_files[*]}"
 
 		git add ${commit_files[@]} --force --ignore-errors
 
