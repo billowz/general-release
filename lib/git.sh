@@ -4,6 +4,9 @@ source $(dirname $BASH_SOURCE)/util.sh
 
 EX_DIRTYHEAD=2
 
+git_commit_name="${GIT_COMMIT_NAME:-"Releaser"}"
+git_commit_email="${GIT_COMMIT_EMAIL:-"billowz@hotmail.com"}"
+
 [[ ! -x "$(command -v git)" ]] && exit_error "you need to install the git"
 [[ ! "$(git rev-parse --git-dir)" ]] && exit_error "not running from a git repository."
 
@@ -27,8 +30,8 @@ function git_push() {
 	local username=$(git config --get user.name)
 	local email=$(git config --get user.email)
 	if [[ ! $username || ! $email ]]; then
-		git config --local user.name "Release"
-		git config --local user.email "tao.zeng.zt@qq.com"
+		git config --local user.name "$git_commit_name"
+		git config --local user.email "$git_commit_email"
 	fi
 	log_debug "git push %s origin HEAD:%s with %s\<%s>" \
 		"$@" "$branch" \

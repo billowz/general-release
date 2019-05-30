@@ -15,14 +15,14 @@
 		],
 		"commitTemplate": "./.commit_template"
 	},
-	"homepage": "https://github.com/tao-zeng/general-release",
-	"author": "Tao Zeng <tao.zeng.zt@qq.com>",
+	"homepage": "https://github.com/billowz/general-release",
+	"author": "Billowz <billowz@hotmail.com>",
 	"bugs": {
-		"url": "https://github.com/tao-zeng/general-release/issues"
+		"url": "https://github.com/billowz/general-release/issues"
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/tao-zeng/general-release.git"
+		"url": "https://github.com/billowz/general-release.git"
 	},
 	"keywords": [
 		"release",

@@ -87,7 +87,7 @@ The header is mandatory and the scope of the header is optional.
 
   ```bash
   # download
-  curl -L -s https://github.com/tao-zeng/general-release/releases/download/$(curl -L -s -H 'Accept: application/json' https://github.com/tao-zeng/general-release/releases/latest | sed -e 's/.*"tag_name":"\([^"]*\)".*/\1/')/general-release.zip -o general-release.zip
+  curl -L -s https://github.com/billowz/general-release/releases/download/$(curl -L -s -H 'Accept: application/json' https://github.com/billowz/general-release/releases/latest | sed -e 's/.*"tag_name":"\([^"]*\)".*/\1/')/general-release.zip -o general-release.zip
   unzip -o general-release.zip -d general-release
   rm -f general-release.zip
   ```
@@ -548,8 +548,8 @@ Write Build Details on Appveyor
 
 [MIT](http://opensource.org/licenses/MIT)
 
-[ci]: https://ci.appveyor.com/project/tao-zeng/general-release/branch/master
-[build-badge]: https://img.shields.io/appveyor/ci/tao-zeng/general-release/master.svg
+[ci]: https://ci.appveyor.com/project/billowz/general-release/branch/master
+[build-badge]: https://img.shields.io/appveyor/ci/billowz/general-release/master.svg
 [npm]: https://www.npmjs.com/package/general-release/v/latest
 [downloads-badge]: https://img.shields.io/npm/dt/general-release.svg
 [version-badge]: https://img.shields.io/npm/v/general-release/latest.svg

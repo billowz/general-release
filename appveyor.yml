@@ -11,9 +11,9 @@ image: Visual Studio 2015
 
 environment:
   NPM_TOKEN:
-    secure: zTogpCh9AtlTR+osabCb9UMXMtIT8qTE0Rvay78bTORSysIVo5Ev+y6oOsHdDSO9
+    secure: mnQDBFAtBOiK5TwLoaC6ZaUfUswnI4+NSEcF2JQzhgJFMnylOJpbBE/Rg4ECtjkU
   GITHUB_TOKEN:
-    secure: wMVG1uvMB8qswngCrsL0eg6E/7HEaCjbAmXFM26V+sVO1OnP1/mgMu6kGX2uCWm0
+    secure: huFdynQnMF5VRZqa+BvfrQyzCBifrvEGOlLqKn0gsPhY+AKVv+VI4hFA7L1c6e27
 
 init:
   - ps: |
