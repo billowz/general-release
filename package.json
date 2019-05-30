@@ -1,7 +1,7 @@
 {
 	"name": "general-release",
 	"description": "Automatic Release Tool for Git repository using bash shell",
-	"version": "0.0.9",
+	"version": "0.0.10",
 	"bin": "bin/bin.js",
 	"scripts": {
 		"postinstall": "node bin/bin.js install",

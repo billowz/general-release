@@ -1,3 +1,5 @@
+# [0.0.10](https://github.com/billowz/general-release/compare/v0.0.9...v0.0.10 ) (2019-05-30)
+
 # [0.0.9](https://github.com/tao-zeng/general-release/compare/v0.0.8...v0.0.9 ) (2019-05-27)
 
 ### Bug Fixes
