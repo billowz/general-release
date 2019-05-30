@@ -1,3 +1,10 @@
+# [0.0.13](https://github.com/billowz/general-release/compare/v0.0.12...v0.0.13 ) (2019-05-30)
+
+### Bug Fixes
+
+* git commit with --no-verify flag ([aa7b07b](https://github.com/billowz/general-release/commit/aa7b07b ))
+* fix error output ([aa7b07b](https://github.com/billowz/general-release/commit/aa7b07b ))
+
 # [0.0.12](https://github.com/billowz/general-release/compare/v0.0.11...v0.0.12 ) (2019-05-30)
 
 ### Bug Fixes
