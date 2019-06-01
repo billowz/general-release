@@ -1,3 +1,9 @@
+# [0.0.16](https://github.com/billowz/general-release/compare/v0.0.15...v0.0.16 ) (2019-06-01)
+
+### Bug Fixes
+
+* fix script call (sh not run bash on ubuntu) ([c09fd7a](https://github.com/billowz/general-release/commit/c09fd7a ))
+
 # [0.0.13](https://github.com/billowz/general-release/compare/v0.0.12...v0.0.13 ) (2019-05-30)
 
 ### Bug Fixes
