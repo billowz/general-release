@@ -3,4 +3,4 @@
 /package-lock.json
 /yarn.lock
 /CHANGELOG.md
-/.commit_template
+/.gitmessage

@@ -26,6 +26,8 @@ Automatic Release Tool for Git repository using bash shell
 - [x] Archive files (use gzip plugin)
 - [x] Create release at GitHub (use github plugin)
 - [x] Create release at NPM (use npm plugin)
+- [ ] Create release at Yum (use yum plugin)
+- [ ] Create release at Maven (use maven plugin)
 - [x] Update appveyor build details (use appveyor plugin)
 - [x] Custom plugin
 - [x] Validate the commit message
@@ -54,27 +56,27 @@ The header is mandatory and the scope of the header is optional.
 
 - The Config Fields
 
-| Field Name                                     | Field Type | Description                                                                                                                                                                                                                      |
-|------------------------------------------------|------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `tag_repo`                                     | string     | Git repository URL, default: `[auto]` <br> Get the url with command: `git config --get remote.origin.url`                                                                                                                        |
-| `tag_prefix`                                   | string     | Prefix of the Git tag , default: `v`                                                                                                                                                                                             |
-| `release_note`                                 | string     | Release Note, default: `[auto]` <br> Analyze the commits after the last Git tag by the rules defined in the configuration                                                                                                        |
-| `changelog`                                    | string     | Generante the changelog file, default: `CHANGELOG.md`                                                                                                                                                                            |
-| `commit`                                       | string[]   | Git commit files, default: `CHANGELOG.md`                                                                                                                                                                                        |
-| `commit_message`                               | string     | Commit message template, default: `chore(release): {tag} [skip ci]`, the format variables: <br> - `version`: Release version <br> - `channel`: Release channel <br> - `prerelease`: Pre-release id <br> - `tag`: Release Git tag |
-| `commit_note`                                  | boolean    | Commit with release note, default: `true`                                                                                                                                                                                        |
-| `plugins`                                      | string[]   | Plugins <br> - `github [--file, --token] [options]` <br> - `npm [--registry, --access, --token] [options]` <br> - `appveyor [options]` <br> - `constum.sh [options]`                                                             |
-| **branchs**                                    | object[]   | The branch config                                                                                                                                                                                                                |
-| &nbsp;&nbsp;&nbsp;&nbsp;`branchs[].pattern`    | regexp     | `required`: Pattern of the release branch name                                                                                                                                                                                   |
-| &nbsp;&nbsp;&nbsp;&nbsp;`branchs[].channel`    | string     | Publish channel                                                                                                                                                                                                                  |
-| &nbsp;&nbsp;&nbsp;&nbsp;`branchs[].prerelease` | string     | Pre-release id                                                                                                                                                                                                                   |
-| **rules**                                      | object[]   | Rules for release version analyzer and release note generator                                                                                                                                                                    |
-| &nbsp;&nbsp;&nbsp;&nbsp;`rules[].type`         | regexp     | `required`: Pattern of the commit type                                                                                                                                                                                           |
-| &nbsp;&nbsp;&nbsp;&nbsp;`rules[].scope`        | regexp     | Pattern of the commit scope                                                                                                                                                                                                      |
-| &nbsp;&nbsp;&nbsp;&nbsp;`rules[].release`      | string     | The Release type:`major`, `minor`, `patch`, `none`, default `none`                                                                                                                                                               |
-| &nbsp;&nbsp;&nbsp;&nbsp;`rules[].prerelease`   | string     | The Pre-release type: `major`, `minor`, `patch`, `prerelease`, `none`, default: `prerelease`                                                                                                                                     |
-| &nbsp;&nbsp;&nbsp;&nbsp;`rules[].note`         | string     | Title of the release note                                                                                                                                                                                                        |
-| &nbsp;&nbsp;&nbsp;&nbsp;`rules[].body`         | boolean    | Include the commit body to release note                                                                                                                                                                                          |
+Field Name                                     | Field Type | Description
+-----------------------------------------------|------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+`tag_repo`                                     | string     | Git repository URL, default: `[auto]` <br> Get the url with command: `git config --get remote.origin.url`
+`tag_prefix`                                   | string     | Prefix of the Git tag , default: `v`
+`release_note`                                 | string     | Release Note, default: `[auto]` <br> Analyze the commits after the last Git tag by the rules defined in the configuration
+`changelog`                                    | string     | Generante the changelog file, default: `CHANGELOG.md`
+`commit`                                       | string[]   | Git commit files, default: `CHANGELOG.md`
+`commit_message`                               | string     | Commit message template, default: `chore(release): {tag} [skip ci]`, the format variables: <br> - `version`: Release version <br> - `channel`: Release channel <br> - `prerelease`: Pre-release id <br> - `tag`: Release Git tag
+`commit_note`                                  | boolean    | Commit with release note, default: `true`
+`plugins`                                      | string[]   | Plugins <br> - `github [--file, --token] [options]` <br> - `npm [--registry, --access, --token] [options]` <br> - `appveyor [options]` <br> - `constum.sh [options]`
+**branchs**                                    | object[]   | The branch config
+&nbsp;&nbsp;&nbsp;&nbsp;`branchs[].pattern`    | regexp     | `required`: Pattern of the release branch name
+&nbsp;&nbsp;&nbsp;&nbsp;`branchs[].channel`    | string     | Publish channel
+&nbsp;&nbsp;&nbsp;&nbsp;`branchs[].prerelease` | string     | Pre-release id
+**rules**                                      | object[]   | Rules for release version analyzer and release note generator
+&nbsp;&nbsp;&nbsp;&nbsp;`rules[].type`         | regexp     | `required`: Pattern of the commit type
+&nbsp;&nbsp;&nbsp;&nbsp;`rules[].scope`        | regexp     | Pattern of the commit scope
+&nbsp;&nbsp;&nbsp;&nbsp;`rules[].release`      | string     | The Release type:`major`, `minor`, `patch`, `none`, default `none`
+&nbsp;&nbsp;&nbsp;&nbsp;`rules[].prerelease`   | string     | The Pre-release type: `major`, `minor`, `patch`, `prerelease`, `none`, default: `prerelease`
+&nbsp;&nbsp;&nbsp;&nbsp;`rules[].note`         | string     | Title of the release note
+&nbsp;&nbsp;&nbsp;&nbsp;`rules[].body`         | boolean    | Include the commit body to release note
 
 - general-release looks the config file at `.release.yml`
 - Use `--config` or `-c` to use another path
@@ -188,11 +190,11 @@ The header is mandatory and the scope of the header is optional.
 
 - Set the default options in package.json with `releaseConfig` property
 
-| Property                       | Property Type             | Description                                                                                                                                                                                                                                                                                                                                                            |
-|--------------------------------|---------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `releaseConfig.config`         | string                    | The config file, default: `.release.yml` or [node_modules/general-release/src/release.yml](src/release.yml)                                                                                                                                                                                                                                                            |
-| `releaseConfig.commitTemplate` | string                    | The path of generated commit template file, default: `.commit-template`                                                                                                                                                                                                                                                                                                |
-| `releaseConfig.tools`          | boolean, string, string[] | Auto install/uninstall the tools: `commit-template`, `commit-lint`, default: `true` <br> - `true`: Install/Uninstall all tools on install/uninstall `general-release` <br> - `false`: Not install/uninstall any tools on install/uninstall `general-release` <br> - `string`, `string[]`: Install/Uninstall the specified tools on install/uninstall `general-release` |
+Property                       | Property Type             | Description
+-------------------------------|---------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+`releaseConfig.config`         | string                    | The config file, default: `.release.yml` or [node_modules/general-release/src/release.yml](src/release.yml)
+`releaseConfig.commitTemplate` | string                    | The path of generated commit template file, default: `.gitmessage`
+`releaseConfig.tools`          | boolean, string, string[] | Auto install/uninstall the tools: `commit-template`, `commit-lint`, default: `true` <br> - `true`: Install/Uninstall all tools on install/uninstall `general-release` <br> - `false`: Not install/uninstall any tools on install/uninstall `general-release` <br> - `string`, `string[]`: Install/Uninstall the specified tools on install/uninstall `general-release`
 
   - e.g.
 

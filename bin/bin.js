@@ -34,7 +34,7 @@ if (cmd !== "uninstall" && cfg.config) {
 
 shell.exit(
 	shell.exec(
-		`cd "${root}" && ${path.join(__dirname, "bin.sh")} ${args
+		`cd "${root}" && bash ${path.join(__dirname, "bin.sh")} ${args
 			.map(arg => `'${arg}'`)
 			.join(" ")}`
 	).code

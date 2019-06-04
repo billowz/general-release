@@ -13,7 +13,7 @@
 			"message-template",
 			"message-lint"
 		],
-		"commitTemplate": "./.commit_template"
+		"commitTemplate": "./.gitmessage"
 	},
 	"homepage": "https://github.com/billowz/general-release",
 	"author": "Billowz <billowz@hotmail.com>",

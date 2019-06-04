@@ -5,7 +5,7 @@ source $root_dir/lib/git.sh
 source $root_dir/lib/config.sh
 
 commit_lint_hook_file=".git/hooks/commit-msg"
-default_template_file=".commit_template"
+default_template_file=".gitmessage"
 
 hook_head="# general-release"
 function generate_commit_linter() {
