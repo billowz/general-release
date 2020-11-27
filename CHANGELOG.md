@@ -1,3 +1,9 @@
+# [0.0.18](https://github.com/billowz/general-release/compare/v0.0.17...v0.0.18 ) (2020-11-27)
+
+### Bug Fixes
+
+* miss the first commit rule on commit-msg hook ([fcfa127](https://github.com/billowz/general-release/commit/fcfa127 ))
+
 # [0.0.17](https://github.com/billowz/general-release/compare/v0.0.16...v0.0.17 ) (2019-06-04)
 
 ### Bug Fixes
