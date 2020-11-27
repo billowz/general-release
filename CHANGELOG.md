@@ -1,3 +1,9 @@
+# [0.0.17](https://github.com/billowz/general-release/compare/v0.0.16...v0.0.17 ) (2019-06-04)
+
+### Bug Fixes
+
+* not execute bin.sh with bash script from nodejs ([85fa6f2](https://github.com/billowz/general-release/commit/85fa6f2 ))
+
 # [0.0.16](https://github.com/billowz/general-release/compare/v0.0.15...v0.0.16 ) (2019-06-01)
 
 ### Bug Fixes
