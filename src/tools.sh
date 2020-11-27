@@ -16,7 +16,7 @@ $hook_head
 
 source ${root_dir//\\//}/lib/config.sh"
 	echo 'msg="$(cat $1)"'
-	printf "\n# Define Release Rules from %s" "$config_file"
+	printf "\n# Define Release Rules from %s\n" "$config_file"
 
 	for i in "${release_rules_[@]}"; do
 		echo "${i}_type=\"$(get_var $i type)\""

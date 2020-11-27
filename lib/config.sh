@@ -165,7 +165,7 @@ function load_config() {
 		fi
 	done
 
-	: ${release_git_repo:=$(git config --get remote.origin.url | sed -e "s/\.git$//" -e "s|^git@\([^:]+\):|https://\1|")}
+	: ${release_git_repo:=$(git config --get remote.origin.url | sed -r 's|^git@(.+):|https://\1/|; s/\.git$//')}
 	: ${release_tag_prefix:=$default_tag_prefix}
 	: ${release_changelog:=$default_changelog}
 	: ${release_commit_message:=$default_commit_message}
