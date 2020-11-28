@@ -1,3 +1,9 @@
+# [0.0.19](https://github.com/billowz/general-release/compare/v0.0.18...v0.0.19 ) (2020-11-28)
+
+### Bug Fixes
+
+* can not read current git repo on osx ([3f6c3d8](https://github.com/billowz/general-release/commit/3f6c3d8 ))
+
 # [0.0.18](https://github.com/billowz/general-release/compare/v0.0.17...v0.0.18 ) (2020-11-27)
 
 ### Bug Fixes
